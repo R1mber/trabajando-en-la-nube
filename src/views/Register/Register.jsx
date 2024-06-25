@@ -1,8 +1,8 @@
 import { useState } from 'react'
-import { db, createUser, auth } from './../../config/firebase'
+import { db, createUser, auth,signIn } from './../../config/firebase'
 import { doc, setDoc } from 'firebase/firestore'
 import { useNavigate } from 'react-router-dom'
-
+import { GoogleAuthProvider, onAuthStateChanged, signInWithPopup } from "firebase/auth";
 export default function Register () {
   const [error, setError] = useState(null)
   const history = useNavigate()
@@ -47,6 +47,19 @@ export default function Register () {
     }
   }
 
+  const loginWithGoogle = async (user) => {
+    const responseGoogle = new GoogleAuthProvider();
+    
+    try {
+      await signInWithPopup(auth, responseGoogle)
+      history('/user')
+      setError(null)
+    } catch (error) {
+      console.error(error)
+      setError(error.code)
+    }
+
+  }
   return (
     <div className="content-form">
       <div className="form">
@@ -67,8 +80,9 @@ export default function Register () {
           {
             error && <div style={{ color: 'red' }} >{translateError(error)}</div>
           }
-          <button type="submit">Crear</button>
+          <button type="submit">Crear</button> <br/>
         </form>
+        <button onClick={loginWithGoogle}>Regitro con Google</button>
       </div>
     </div>
   )

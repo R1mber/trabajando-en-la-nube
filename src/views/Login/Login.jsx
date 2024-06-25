@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { signIn, auth } from './../../config/firebase'
+import { GoogleAuthProvider, onAuthStateChanged, signInWithPopup } from "firebase/auth";
 
 export default function Login () {
   const [error, setError] = useState(null)
@@ -36,7 +37,19 @@ export default function Login () {
       return 'Error al iniciar sesión'
     }
   }
+  const loginWithGoogle = async (user) => {
+    const responseGoogle = new GoogleAuthProvider();
+    
+    try {
+      await signInWithPopup(auth, responseGoogle)
+      history('/user')
+      setError(null)
+    } catch (error) {
+      console.error(error)
+      setError(error.code)
+    }
 
+  }
   return (
     <div className="content-form">
       <div className="form">
@@ -57,7 +70,10 @@ export default function Login () {
         </form>
         <Link to={'/Register'}
           className='btn btn-secondary'
-        >Registrarse</Link>
+        >Registrarse</Link> <br />
+        <Link onClick={loginWithGoogle}
+          className='btn btn-secondary'
+        >google</Link>
       </div>
     </div>
   )
