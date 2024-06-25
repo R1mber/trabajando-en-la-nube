@@ -1,5 +1,5 @@
 import views from '../views'
-import { HOME, LOGIN, REGISTER } from './paths'
+import { HOME, LOGIN, REGISTER, USER, CHAT } from './paths'
 
 const Home = {
   component: views.Home,
@@ -19,12 +19,25 @@ const Register = {
   isPrivate: false
 }
 
+const User = {
+  component: views.User,
+  path: USER,
+  isPrivate: false
+}
+
+const Chat = {
+  component: views.Chat,
+  path: CHAT,
+  isPrivate: false
+}
+
 const routes = [
 
   // aqui se agregan las rutas nuevas
-
+  User,
   Login,
   Register,
+  Chat,
   Home]
 
 export default routes
